@@ -1,0 +1,490 @@
+{
+	"info": {
+		"_postman_id": "209db1cd-ce18-4a5b-aba3-7f7d86a59923",
+		"name": "Neuro App API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Doctor",
+			"item": [
+				{
+					"name": "Register Doctor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"jose3@jose.com\",\n\t\"password\": \"1234\",\n\t\"first_name\": \"José\",\n\t\"last_name\": \"Orellana\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Doctor By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/doctors/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"doctors",
+								"3"
+							]
+						},
+						"description": "Get user by an specific id"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Doctor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/doctors/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"doctors",
+								"2"
+							]
+						},
+						"description": "Delete a doctor given his id"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Doctor",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"first_name\": \"Manu\",\n\t\"last_name\": \"Mijares\",\n\t\"work\": \"Tambien\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/doctors/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"doctors",
+								"3"
+							]
+						},
+						"description": "Update doctor given his id"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d3f47a0b-abbd-461d-8d3e-eea73925b42d",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"access_token not empty\", function () {",
+									"    pm.expect(jsonData.access_token).not.eql(undefined);",
+									"});",
+									"",
+									"pm.test(\"refresh token not empty\", function () {",
+									"    pm.expect(jsonData.refresh_token).not.eql(undefined);",
+									"});",
+									"// set access token as environement variable",
+									"if (jsonData.access_token !== undefined) {",
+									"    postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);",
+									"} else {",
+									"    postman.setEnvironmentVariable(\"access_token\", null);",
+									"}",
+									"// set refresh token as environement variable",
+									"if (jsonData.refresh_token !== undefined) {",
+									"    postman.setEnvironmentVariable(\"refresh_token\", jsonData.refresh_token);",
+									"} else {",
+									"    postman.setEnvironmentVariable(\"refresh_token\", null);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"jose@jose.com\",\n\t\"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Login user using email and password"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODg2Mzc3NjIsIm5iZiI6MTU4ODYzNzc2MiwianRpIjoiYzI2OGVjNzctZThhZC00MTE3LWE0YjUtNjg5OWQ5YjY3N2E1IiwiZXhwIjoxNTg4NjM4NjYyLCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.0jBxxN1xf6dMgSU0yuttPIoNaA98z_Bsb52NtnNHaVk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"logout"
+							]
+						},
+						"description": "Logout user"
+					},
+					"response": []
+				}
+			],
+			"description": "User related endpoints: Register, Login, Logout, etc.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Pacient",
+			"item": [
+				{
+					"name": "Create Pacient",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODg2NDAzODgsIm5iZiI6MTU4ODY0MDM4OCwianRpIjoiZjdjODM2NWItMDBkNy00Njk2LTgzMWQtZjNiYjQyNTMzNzcwIiwiZXhwIjoxNTg4NjQxMjg4LCJpZGVudGl0eSI6MSwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.DVDlFvwQbpE5bowESSE1oPVgFA2GGzfmKs6uW1SliOc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"gender\": \"f\",\n\t\"birth_date\": \"2020-05-05\",\n\t\"living_city\": \"Valencia\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/pacients",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pacients"
+							]
+						},
+						"description": "Creates a pacient if you are logged in"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pacient By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pacients/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pacients",
+								"2"
+							]
+						},
+						"description": "Get pacient by an specific id"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Pacient",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"living_city\": \"Caracas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/pacients/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pacients",
+								"4"
+							]
+						},
+						"description": "Update pacient given his id"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pacient",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/pacients/5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pacients",
+								"5"
+							]
+						},
+						"description": "Delete a pacient given his id"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Clinical Stories",
+			"item": [
+				{
+					"name": "Create Story",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pacient_id\": 1,\n\t\"title\": \"My first story\",\n\t\"description\": \"This is my first story ever\",\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/clinical_stories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clinical_stories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Story By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/clinical_stories/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clinical_stories",
+								"3"
+							]
+						},
+						"description": "Get single story given his id"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Story",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/clinical_stories/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clinical_stories",
+								"3"
+							]
+						},
+						"description": "Update story given id"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Story",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"I changed the title\",\n\t\"description\": \"And the description too\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/clinical_stories/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clinical_stories",
+								"4"
+							]
+						},
+						"description": "Delete story from database"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9a68bebb-a0b3-4205-aae9-c9429d513777",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7e803400-64a0-485a-ae93-9698aca2258d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
