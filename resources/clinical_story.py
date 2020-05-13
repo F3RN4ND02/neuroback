@@ -9,7 +9,6 @@ from schemas.clinical_story import ClinicalStorySchema
 from models.pacient import PacientModel
 
 from utils.custom_errors import NotAuthorized, ResourceNotFound
-from utils.try_decorator import try_except
 
 clinical_story_schema = ClinicalStorySchema()
 
@@ -17,7 +16,6 @@ clinical_story_schema = ClinicalStorySchema()
 class CreateClinicalStory(Resource):
     @classmethod
     @fresh_jwt_required
-    @try_except
     def post(cls):
         clinical_story_json = request.get_json()
         clinical_story_json['doctor_id'] = get_jwt_identity()
@@ -38,7 +36,6 @@ class CreateClinicalStory(Resource):
 class ClinicalStory(Resource):
     @classmethod
     @jwt_required
-    @try_except
     def get(cls, clinical_story_id: int):
         clinical_story = ClinicalStoryModel.find_by_id(clinical_story_id)
         if not clinical_story:
@@ -48,7 +45,6 @@ class ClinicalStory(Resource):
 
     @classmethod
     @fresh_jwt_required
-    @try_except
     def delete(cls, clinical_story_id: int):
         clinical_story = ClinicalStoryModel.find_by_id(clinical_story_id)
         if not clinical_story:
@@ -62,7 +58,6 @@ class ClinicalStory(Resource):
 
     @classmethod
     @fresh_jwt_required
-    @try_except
     def put(cls, clinical_story_id: int):
         clinical_story = ClinicalStoryModel.find_by_id(clinical_story_id)
         if not clinical_story:

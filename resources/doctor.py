@@ -12,7 +12,6 @@ from flask_jwt_extended import (
 from models.doctor import DoctorModel
 from schemas.doctor import DoctorSchema
 from blacklist import BLACKLIST
-from utils.try_decorator import try_except
 from utils.custom_errors import ResourceAlreadyExists, ResourceNotFound, InvalidCredentials, NotAuthorized
 
 doctor_schema = DoctorSchema()
@@ -22,7 +21,6 @@ DOCTOR_LOGGED_OUT = "Doctor <id={}> successfully logged out."
 
 class DoctorRegister(Resource):
     @classmethod
-    @try_except
     def post(cls):
         doctor_json = request.get_json()
         doctor = doctor_schema.load(doctor_json)
@@ -37,7 +35,6 @@ class DoctorRegister(Resource):
 
 class DoctorLogin(Resource):
     @classmethod
-    @try_except
     def post(cls):
         doctor_json = request.get_json()
 
@@ -61,7 +58,6 @@ class DoctorLogout(Resource):
 
 class Doctor(Resource):
     @classmethod
-    @try_except
     def get(cls, doctor_id: int):
         doctor = DoctorModel.find_by_id(doctor_id)
         if not doctor:
@@ -71,7 +67,6 @@ class Doctor(Resource):
 
     @classmethod
     @jwt_required
-    @try_except
     def delete(cls, doctor_id: int):
         doctor = DoctorModel.find_by_id(doctor_id)
         if not doctor:
@@ -85,7 +80,6 @@ class Doctor(Resource):
 
     @classmethod
     @jwt_required
-    @try_except
     def put(cls, doctor_id: int):
         doctor = DoctorModel.find_by_id(doctor_id)
         if not doctor:

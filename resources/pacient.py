@@ -7,14 +7,12 @@ from models.pacient import PacientModel
 from schemas.pacient import PacientSchema
 
 from utils.custom_errors import NotAuthorized, ResourceNotFound
-from utils.try_decorator import try_except
 
 pacient_schema = PacientSchema()
 
 class CreatePacient(Resource):
     @classmethod
     @fresh_jwt_required
-    @try_except
     def post(cls):
         pacient_json = request.get_json()
         pacient_json['doctor_id'] = get_jwt_identity()
@@ -27,7 +25,6 @@ class CreatePacient(Resource):
 class Pacient(Resource):
     @classmethod
     @jwt_required
-    @try_except
     def get(cls, pacient_id: int):
         pacient = PacientModel.find_by_id(pacient_id)
         if not pacient:
@@ -40,7 +37,6 @@ class Pacient(Resource):
 
     @classmethod
     @fresh_jwt_required
-    @try_except
     def delete(cls, pacient_id: int):
         pacient = PacientModel.find_by_id(pacient_id)
         if not pacient:
@@ -54,7 +50,6 @@ class Pacient(Resource):
 
     @classmethod
     @fresh_jwt_required
-    @try_except
     def put(cls, pacient_id: int):
         pacient = PacientModel.find_by_id(pacient_id)
         if not pacient:

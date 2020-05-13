@@ -1,12 +1,14 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from marshmallow import ValidationError
 
 from db import db
 from blacklist import BLACKLIST
 from resources.doctor import DoctorRegister, DoctorLogin, Doctor, DoctorLogout
 from resources.pacient import CreatePacient, Pacient
 from resources.clinical_story import CreateClinicalStory, ClinicalStory
+from utils.custom_errors import *
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
@@ -33,6 +35,27 @@ def check_if_token_in_blacklist(decrypted_token):
     return (
         decrypted_token["jti"] in BLACKLIST
     )
+
+# ERROR HANDLING
+@app.errorhandler(ValidationError)
+def handle_validation_error(err):
+    return { "success": False, "errors": err.messages}, 400
+
+@app.errorhandler(ResourceAlreadyExists)
+def handle_resource_exists_error(err):
+    return { "success": False, "errors": "Resource with given primary key already exists"}, 400
+
+@app.errorhandler(InvalidCredentials)
+def handle_invalid_cred_error(err):
+    return { "success": False, "errors": "Invalid credentials"}, 401
+
+@app.errorhandler(ResourceNotFound)
+def handle_resource_not_found_error(err):
+    return { "success": False, "errors": "Resource not found"}, 404
+
+@app.errorhandler(NotAuthorized)
+def handle_authorization_error(err):
+    return { "success": False, "errors": "You have no access to this resource"}, 401
 
 api.add_resource(DoctorRegister, "/register")
 api.add_resource(Doctor, "/doctors/<int:doctor_id>")
