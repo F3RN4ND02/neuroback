@@ -6,16 +6,15 @@ from flask_jwt_extended import jwt_required, fresh_jwt_required, get_jwt_identit
 from models.pacient import PacientModel
 from schemas.pacient import PacientSchema
 
-pacient_schema = PacientSchema()
+from utils.custom_errors import NotAuthorized, ResourceNotFound
+from utils.try_decorator import try_except
 
-BLANK_ERROR = "'{}' cannot be blank."
-PACIENT_NOT_FOUND = "Pacient not found."
-PACIENT_DELETED = "Pacient deleted."
-PACIENT_LOGGED_OUT = "Pacient <id={}> successfully logged out."
+pacient_schema = PacientSchema()
 
 class CreatePacient(Resource):
     @classmethod
     @fresh_jwt_required
+    @try_except
     def post(cls):
         pacient_json = request.get_json()
         pacient_json['doctor_id'] = get_jwt_identity()
@@ -28,38 +27,41 @@ class CreatePacient(Resource):
 class Pacient(Resource):
     @classmethod
     @jwt_required
+    @try_except
     def get(cls, pacient_id: int):
         pacient = PacientModel.find_by_id(pacient_id)
         if not pacient:
-            return {"success": False, "error": PACIENT_NOT_FOUND}, 404
+            raise ResourceNotFound
         
         if pacient.doctor_id != get_jwt_identity():
-            return {"success": False, "error": "You have no access to this pacient"}, 401
+            raise NotAuthorized
 
         return { "success": True, "data": pacient_schema.dump(pacient) }, 200
 
     @classmethod
     @fresh_jwt_required
+    @try_except
     def delete(cls, pacient_id: int):
         pacient = PacientModel.find_by_id(pacient_id)
         if not pacient:
-            return {"success": False, "error": PACIENT_NOT_FOUND}, 404
+            raise ResourceNotFound
 
         if pacient.doctor_id != get_jwt_identity():
-            return {"success": False, "error": "You have no access to this pacient"}, 401
+            raise NotAuthorized
 
         pacient.delete_from_db()
         return { "success": True, "data": {} }, 200
 
     @classmethod
     @fresh_jwt_required
+    @try_except
     def put(cls, pacient_id: int):
         pacient = PacientModel.find_by_id(pacient_id)
         if not pacient:
-            return {"success": False, "error": PACIENT_NOT_FOUND}, 404
+            raise ResourceNotFound
 
         if pacient.doctor_id != get_jwt_identity():
-            return {"success": False, "error": "You have no access to this pacient"}, 401
+            raise NotAuthorized
 
         fields_json = request.get_json()
         supported_fields = ['gender', 'birth_date', 'living_city']

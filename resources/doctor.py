@@ -12,24 +12,23 @@ from flask_jwt_extended import (
 from models.doctor import DoctorModel
 from schemas.doctor import DoctorSchema
 from blacklist import BLACKLIST
+from utils.try_decorator import try_except
+from utils.custom_errors import ResourceAlreadyExists, ResourceNotFound, InvalidCredentials, NotAuthorized
 
 doctor_schema = DoctorSchema()
 
-BLANK_ERROR = "'{}' cannot be blank."
-DOCTOR_ALREADY_EXISTS = "A doctor with that email already exists."
-DOCTOR_NOT_FOUND = "Doctor not found."
 DOCTOR_DELETED = "Doctor deleted."
-INVALID_CREDENTIALS = "Invalid credentials!"
 DOCTOR_LOGGED_OUT = "Doctor <id={}> successfully logged out."
 
 class DoctorRegister(Resource):
     @classmethod
+    @try_except
     def post(cls):
         doctor_json = request.get_json()
         doctor = doctor_schema.load(doctor_json)
 
         if DoctorModel.find_by_email(doctor.email):
-            return {"success": False, "message": DOCTOR_ALREADY_EXISTS}, 400
+            raise ResourceAlreadyExists
 
         doctor.password = generate_password_hash(doctor.password, method='sha256')
         doctor.save_to_db()
@@ -38,6 +37,7 @@ class DoctorRegister(Resource):
 
 class DoctorLogin(Resource):
     @classmethod
+    @try_except
     def post(cls):
         doctor_json = request.get_json()
 
@@ -48,7 +48,7 @@ class DoctorLogin(Resource):
             refresh_token = create_refresh_token(doctor.id)
             return {"success": True, "access_token": access_token, "refresh_token": refresh_token}, 200
 
-        return {"success": False, "message": INVALID_CREDENTIALS}, 401
+        raise InvalidCredentials
 
 class DoctorLogout(Resource):
     @classmethod
@@ -61,27 +61,38 @@ class DoctorLogout(Resource):
 
 class Doctor(Resource):
     @classmethod
+    @try_except
     def get(cls, doctor_id: int):
         doctor = DoctorModel.find_by_id(doctor_id)
         if not doctor:
-            return {"success": False, "error": DOCTOR_NOT_FOUND}, 404
+            raise ResourceNotFound
 
         return { "success": True, "data": doctor_schema.dump(doctor) }, 200
 
     @classmethod
+    @jwt_required
+    @try_except
     def delete(cls, doctor_id: int):
         doctor = DoctorModel.find_by_id(doctor_id)
         if not doctor:
-            return {"success": False, "error": DOCTOR_NOT_FOUND}, 404
+            raise ResourceNotFound
+
+        if doctor_id != get_jwt_identity():
+            raise NotAuthorized
 
         doctor.delete_from_db()
         return { "success": True, "data": {} }, 200
 
     @classmethod
+    @jwt_required
+    @try_except
     def put(cls, doctor_id: int):
         doctor = DoctorModel.find_by_id(doctor_id)
         if not doctor:
-            return {"success": False, "error": DOCTOR_NOT_FOUND}, 404
+            raise ResourceNotFound
+
+        if doctor_id != get_jwt_identity():
+            raise NotAuthorized
 
         fields_json = request.get_json()
         supported_fields = ['first_name', 'last_name', 'birth_date', 'work_city']
