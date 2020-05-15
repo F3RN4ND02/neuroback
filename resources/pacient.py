@@ -59,7 +59,7 @@ class Pacient(Resource):
             raise NotAuthorized
 
         fields_json = request.get_json()
-        supported_fields = ['gender', 'birth_date', 'living_city']
+        supported_fields = ['gender', 'birth_date', 'curent_direction', 'birth_direction']
         update_fields = { k : v for k, v in fields_json.items() if k in supported_fields}
         pacient.update(update_fields)
         return { "success": True, "data": pacient_schema.dump(pacient) }, 200

@@ -9,15 +9,19 @@ class PacientModel(db.Model):
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
     gender = db.Column(db.Enum('m', 'f', 'o'))
     birth_date = db.Column(db.Date, nullable=False)
-    living_city = db.Column(db.String)
+    current_direction = db.Column(db.String(80))
+    birth_direction = db.Column(db.String(80))
+    telephone_1 = db.Column(db.String(20))
+    telephone_2 = db.Column(db.String(20))
     created_at = db.Column(db.DateTime, server_default=func.now())
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
 
-    def __init__(self, doctor_id, gender, birth_date, living_city=None):
+    def __init__(self, doctor_id, gender, birth_date, current_direction=None, birth_direction = None):
         self.doctor_id = doctor_id
         self.gender = gender
         self.birth_date = birth_date
-        self.living_city = living_city
+        self.current_direction = current_direction
+        self.birth_direction = birth_direction
 
     
     @classmethod
