@@ -1,5 +1,5 @@
 from ma import ma
-from models.state import StateModel
+from models.direction.state import StateModel
 
 
 class StateSchema(ma.ModelSchema):

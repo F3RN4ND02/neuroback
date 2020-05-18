@@ -1,5 +1,5 @@
 from ma import ma
-from models.profession_history import ProfessionHistoryModel
+from models.profession_history.profession_history import ProfessionHistoryModel
 
 
 class ProfessionHistorySchema(ma.ModelSchema):

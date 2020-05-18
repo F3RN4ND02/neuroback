@@ -1,5 +1,5 @@
 from ma import ma
-from models.municipality import MunicipalityModel
+from models.direction.municipality import MunicipalityModel
 
 
 class MunicipalitySchema(ma.ModelSchema):

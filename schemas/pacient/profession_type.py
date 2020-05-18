@@ -1,5 +1,5 @@
 from ma import ma
-from models.profession_type import ProfessionTypeModel
+from models.profession_type.profession_type import ProfessionTypeModel
 
 
 class ProfessionTypeSchema(ma.ModelSchema):

@@ -1,5 +1,5 @@
 from ma import ma
-from models.country import CountryModel
+from models.direction.country import CountryModel
 
 
 class CountrySchema(ma.ModelSchema):

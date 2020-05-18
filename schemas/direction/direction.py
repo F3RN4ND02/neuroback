@@ -1,5 +1,5 @@
 from ma import ma
-from models.direction import DirectionModel
+from models.direction.direction import DirectionModel
 
 
 class DirectionSchema(ma.ModelSchema):

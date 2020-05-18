@@ -1,5 +1,5 @@
 from ma import ma
-from models.examResult import ExamResultModel
+from models.clinical_story.exam_result import ExamResultModel
 
 
 class ExamResultSchema(ma.ModelSchema):

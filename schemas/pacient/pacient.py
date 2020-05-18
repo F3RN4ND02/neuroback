@@ -1,6 +1,6 @@
 from ma import ma
 from marshmallow import validates, ValidationError
-from models.pacient import PacientModel
+from models.pacient.pacient import PacientModel
 
 import datetime
 

@@ -1,5 +1,5 @@
 from ma import ma
-from models.examType import ExamTypeModel
+from models.clinical_story.exam_type import ExamTypeModel
 
 
 class ExamTypeSchema(ma.ModelSchema):

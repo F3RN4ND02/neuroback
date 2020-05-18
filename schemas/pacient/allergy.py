@@ -1,5 +1,5 @@
 from ma import ma
-from models.allergy import AllergyModel
+from models.pacient.allergy import AllergyModel
 
 
 class AllergySchema(ma.ModelSchema):

@@ -1,5 +1,5 @@
 from ma import ma
-from models.symptom_type import SymptomTypeModel
+from models.clinical_story.symptom_type import SymptomTypeModel
 
 
 class SymptomTypeSchema(ma.ModelSchema):

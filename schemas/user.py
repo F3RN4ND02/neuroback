@@ -1,13 +1,13 @@
 from ma import ma
 from marshmallow import validates, ValidationError
-from models.doctor import DoctorModel
+from models.user import UserModel
 
 import datetime
 
 
-class DoctorSchema(ma.ModelSchema):
+class UserSchema(ma.ModelSchema):
     class Meta:
-        model = DoctorModel
+        model = UserModel
         load_only = ("password",)
         dump_only = ("id","created_at","updated_at","active",)
 
@@ -21,5 +21,5 @@ class DoctorSchema(ma.ModelSchema):
         current_date = datetime.date.today()
         age = (current_date - value).days / 365.25
         if age < 18:
-            raise ValidationError("Doctor must be at least 18 years old")
+            raise ValidationError("User must be at least 18 years old")
 

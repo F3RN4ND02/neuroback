@@ -1,5 +1,5 @@
 from ma import ma
-from models.clinical_story import ClinicalStoryModel
+from models.clinical_story.clinical_story import ClinicalStoryModel
 
 
 class ClinicalStorySchema(ma.ModelSchema):
