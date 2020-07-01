@@ -11,8 +11,11 @@ flask-sqlalchemy = "*"
 flask-jwt-extended = "*"
 flask-restful = "*"
 marshmallow = "*"
-flask-marshmallow = "*"
+flask-marshmallow = "==0.11.0"
 marshmallow-sqlalchemy = "*"
+flask-cors = "*"
+pymysql = "*"
+request = "*"
 
 [requires]
 python_version = "3.6"

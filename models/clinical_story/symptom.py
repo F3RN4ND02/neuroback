@@ -1,14 +1,12 @@
 from db import Column, Integer, ForeignKey
 
-from .abstract_models import BaseModel
+from models.abstract_models import BaseModel
+
+from models.clinical_story.symptom_type import SymptomTypeModel
 
 class SymptomModel(BaseModel):
-    __tablename__ = "symptoms"
+    __tablename__ = "sintomas"
 
-    id = Column(Integer, primary_key=True)
-    symptom_type_id = Column(Integer, ForeignKey('symptom_types.id'))
-    clinical_story_id = Column(Integer, ForeignKey('clinical_stories.id'))
+    symptom_type_id = Column("tipo_sintomas_id", Integer, ForeignKey(SymptomTypeModel.id))
+    clinical_story_id = Column("historias_clinicas_id", Integer, ForeignKey('historias_clinicas.id'))
 
-    def __init__(self, symptom_type, clinical_story_id):
-        self.symptom_type = symptom_type
-        self.clinical_story_id = clinical_story_id

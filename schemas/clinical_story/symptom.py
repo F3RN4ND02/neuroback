@@ -6,3 +6,4 @@ class SymptomSchema(ma.ModelSchema):
     class Meta:
         model = SymptomModel
         dump_only = ("id",)
+        include_fk = True

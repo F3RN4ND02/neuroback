@@ -6,3 +6,4 @@ class ProfessionTypeSchema(ma.ModelSchema):
     class Meta:
         model = ProfessionTypeModel
         dump_only = ("id",)
+        include_fk = True

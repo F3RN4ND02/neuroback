@@ -6,3 +6,4 @@ class AllergySchema(ma.ModelSchema):
     class Meta:
         model = AllergyModel
         dump_only = ("id",)
+        include_fk = True

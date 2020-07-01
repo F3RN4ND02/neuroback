@@ -1,8 +1,8 @@
 from ma import ma
-from models.direction.state import StateModel
+from models.direction.direction import StateModel
 
 
-class StateSchema(ma.ModelSchema):
+class StateSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = StateModel
         dump_only = ("id",)
