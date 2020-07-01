@@ -1,9 +1,9 @@
 from ma import ma
-from models.chat.chat import ChatModel
+from models.chat.message import MessageModel
 
 
-class ChatSchema(ma.ModelSchema):
+class MessageSchema(ma.ModelSchema):
     class Meta:
-        model = ChatModel
+        model = MessageModel
         dump_only = ("id","date", "seen")
         include_fk = True

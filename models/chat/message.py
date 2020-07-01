@@ -2,7 +2,7 @@ from db import Model, Column, Integer, DateTime, String, session, ForeignKey, Bo
 
 from models.abstract_models import TimeBasedModel
 
-class Model(TimeBasedModel):
+class MessageModel(TimeBasedModel):
     __tablename__ = "mensajes"
 
     chat_id = Column("conversaciones_id", Integer, ForeignKey("conversaciones.id"))

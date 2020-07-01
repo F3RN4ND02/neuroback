@@ -13,3 +13,4 @@ ForeignKey = db.ForeignKey
 session = db.session
 Model = db.Model
 relationship = db.relationship
+Float = db.Float

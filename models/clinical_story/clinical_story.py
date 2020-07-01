@@ -1,4 +1,4 @@
-from db import Column, Integer, ForeignKey, String, Boolean, session, Float
+from db import Column, Integer, ForeignKey, String, Boolean, session
 
 from .exam_result import ExamResultModel
 from .medicine import MedicineModel
@@ -18,7 +18,7 @@ class ClinicalStoryModel(TimeBasedModel):
     diastolic = Column("diastolica", Integer)
     pulse = Column("pulso", Integer)
     resp_freq = Column("freq_respiratoria", Integer)
-    temp = Column("temp", Float)
+    temp = Column("temp", Integer)
     diagnosis = Column("diagnostico", String(4))
     ord_exam =  Column("ord_exam", String(100))
     exam_result = Column("exam_result", String(100))
