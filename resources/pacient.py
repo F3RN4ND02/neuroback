@@ -45,7 +45,7 @@ vaccine_schema_list = VaccineSchema(many=True)
 
 class Pacients(Resource):
     @classmethod
-    @fresh_jwt_required
+    @jwt_required
     def post(cls):
         pacient_json = request.get_json()
         pacient = pacient_schema.load(pacient_json)
@@ -58,7 +58,7 @@ class Pacients(Resource):
         return {"success": True, "data": pacient_schema.dump(pacient)}, 201
 
     @classmethod
-    @fresh_jwt_required
+    @jwt_required
     def get(cls):
         query_params = request.args
         print(query_params)
@@ -97,7 +97,7 @@ class Pacient(Resource):
         return { "success": True, "data": pacient }, 200
 
     @classmethod
-    @fresh_jwt_required
+    @jwt_required
     def put(cls, pacient_id: int):
         pacient = PacientModel.find_by_id(pacient_id)
         if not pacient:

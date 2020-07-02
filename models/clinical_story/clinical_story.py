@@ -12,8 +12,9 @@ class ClinicalStoryModel(TimeBasedModel):
 
     user_id = Column("usuarios_id", Integer, ForeignKey('users.id'))
     pacient_id = Column("pacientes_id", Integer, ForeignKey('pacients.id'))
-    description = Column("motivo_consulta", String(200), nullable=False)
-    cognitions = Column("rasgos_cognitivos", String(200), nullable=False)
+    edad_paciente = Column(Integer, nullable=False)
+    description = Column("motivo_consulta", String(225), nullable=False)
+    cognitions = Column("rasgos_cognitivos", String(2000), nullable=False)
     sistolic = Column("sistolica", Integer)
     diastolic = Column("diastolica", Integer)
     pulse = Column("pulso", Integer)
@@ -55,3 +56,5 @@ class ClinicalStoryModel(TimeBasedModel):
 
         if "temp" in query_params:
             query = query.filter_by(temp=query_params["temp"])
+
+        return query.all()

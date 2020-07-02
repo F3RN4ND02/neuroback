@@ -96,7 +96,6 @@ DROP TABLE IF EXISTS `mydb`.`pacientes` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`pacientes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `direccion_actual` INT(40) NULL,
-  `direccion_nacimiento` INT(40) NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `segundo_nombre` VARCHAR(45) NULL,
   `apellido` VARCHAR(45) NOT NULL,
@@ -113,15 +112,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`pacientes` (
   `actualizado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `dir_actual1_idx` (`direccion_actual` ASC) ,
-  INDEX `dir_nacimiento1_idx` (`direccion_nacimiento` ASC) ,
   UNIQUE INDEX `document_UNIQUE` (`documento` ASC) ,
   CONSTRAINT `dir_actual1`
     FOREIGN KEY (`direccion_actual`)
-    REFERENCES `mydb`.`direcciones` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `dir_nacimiento1`
-    FOREIGN KEY (`direccion_nacimiento`)
     REFERENCES `mydb`.`direcciones` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -147,7 +140,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`usuarios` (
   `numero_colegio` VARCHAR(45) NULL,
   `numero_medico` VARCHAR(45) NULL,
   `sexo` ENUM('m', 'f', 'o') NULL,
-  `fecha_nacimiento` DATE NULL,
   `activo` TINYINT NULL,
   `creado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `actualizado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -167,13 +159,14 @@ CREATE TABLE IF NOT EXISTS `mydb`.`historias_clinicas` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `usuarios_id` INT NOT NULL,
   `pacientes_id` INT NOT NULL,
+  `edad_paciente` INT NOT NULL,
   `motivo_consulta` VARCHAR(225) NOT NULL,
-  `rasgos_cognitivos` VARCHAR(225) NOT NULL,
-  `sistolica` INT(3) NOT NULL,
-  `diastolica` INT(3) NOT NULL,
-  `pulso` INT(3) NOT NULL,
-  `freq_respiratoria` INT(3) NOT NULL,
-  `temp` INT(3) NOT NULL,
+  `rasgos_cognitivos` VARCHAR(2000) NOT NULL,
+  `sistolica` INT(3) NULL,
+  `diastolica` INT(3) NULL,
+  `pulso` INT(3) NULL,
+  `freq_respiratoria` INT(3) NULL,
+  `temp` INT(3) NULL,
   `diagnostico` VARCHAR(255) NULL,
   `ord_exam` VARCHAR(255) NULL,
   `exam_result` VARCHAR(45) NULL,
@@ -203,7 +196,7 @@ DROP TABLE IF EXISTS `mydb`.`tipo_sintomas` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`tipo_sintomas` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `descripcion` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -216,7 +209,7 @@ DROP TABLE IF EXISTS `mydb`.`tipo_profesiones` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`tipo_profesiones` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `descripcion` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -229,7 +222,7 @@ DROP TABLE IF EXISTS `mydb`.`tipo_examenes` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`tipo_examenes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
-  `descripcion` VARCHAR(45) NULL,
+  `descripcion` VARCHAR(200) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -243,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`examenes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `type_exam_id` INT NOT NULL,
   `entradas_id` INT NOT NULL,
-  `resultado` VARCHAR(45) NULL,
+  `resultado` VARCHAR(200) NULL,
   `date` VARCHAR(45) NULL,
   PRIMARY KEY (`id`, `entradas_id`),
   INDEX `fk_exam_result_type_exam1_idx` (`type_exam_id` ASC) ,
@@ -269,7 +262,7 @@ DROP TABLE IF EXISTS `mydb`.`antecedentes` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`antecedentes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `descripcion` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -360,7 +353,7 @@ DROP TABLE IF EXISTS `mydb`.`tipo_vacunas` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`tipo_vacunas` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `descripcion` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -422,9 +415,10 @@ DROP TABLE IF EXISTS `mydb`.`medicamentos` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`medicamentos` (
   `id` INT NOT NULL,
-  `nombre` VARCHAR(45) NOT NULL,
-  `principio_activo` VARCHAR(45) NOT NULL,
-  `laboratorio` VARCHAR(45) NULL,
+  `nombre` VARCHAR(100) NOT NULL,
+  `principio_activo` VARCHAR(100) NOT NULL,
+  `laboratorio` VARCHAR(100) NULL,
+  `medicamentoscol` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -463,7 +457,7 @@ DROP TABLE IF EXISTS `mydb`.`tipo_metadatos` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`tipo_metadatos` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `descripcion` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -544,6 +538,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`mensajes` (
     REFERENCES `mydb`.`usuarios` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Noticias`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`Noticias` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Noticias` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `titulo` VARCHAR(100) NOT NULL,
+  `resumen` VARCHAR(500) NOT NULL,
+  `enlace` VARCHAR(200) NOT NULL,
+  `img_url` VARCHAR(100) NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 

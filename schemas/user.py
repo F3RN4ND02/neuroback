@@ -22,12 +22,12 @@ class UserSchema(ma.ModelSchema):
             raise ValidationError("La contraseña debe poseer entre 8 y 16 caracteres")
 
 
-    @validates("birth_date")
-    def validate_birth_date(self, value):
-        current_date = datetime.date.today()
-        age = (current_date - value).days / 365.25
-        if age < 18:
-            raise ValidationError("El usuario debe ser mayor de 18 años")
+    # @validates("birth_date")
+    # def validate_birth_date(self, value):
+    #     current_date = datetime.date.today()
+    #     age = (current_date - value).days / 365.25
+    #     if age < 18:
+    #         raise ValidationError("El usuario debe ser mayor de 18 años")
 
     @validates_schema
     def validate_password_confirmation(self, data, **kwargs):

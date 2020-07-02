@@ -1,8 +1,8 @@
 from db import Column, String
 
-from models.abstract_models import DescriptionBasedModel
+from models.abstract_models import BaseModel
 
-class MedicineTypeModel(DescriptionBasedModel):
+class MedicineTypeModel(BaseModel):
     __tablename__ = "medicamentos"
 
     principio_activo = Column(String(40), nullable=False)

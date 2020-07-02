@@ -6,7 +6,6 @@ class PacientModel(TimeBasedModel):
     __tablename__ = "pacientes"
 
     current_direction = Column("direccion_actual", Integer, ForeignKey('direcciones.id'))
-    birth_direction = Column("direccion_nacimiento", Integer, ForeignKey('direcciones.id'))
     first_name = Column("nombre", String(12), nullable=False)
     second_name = Column("segundo_nombre", String(12))
     last_name = Column("apellido", String(12), nullable=False)

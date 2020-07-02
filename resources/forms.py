@@ -27,7 +27,6 @@ class ClinicalStoryFormData(Resource):
     def get(cls):
         countries = CountryModel.query.all()
         backgrounds = BackgroundModel.query.all()
-        allergies = AllergyTypeModel.query.all()
         vaccines = VaccineTypeModel.query.all()
         medicines = MedicineTypeModel.query.all()
         return {
@@ -35,7 +34,6 @@ class ClinicalStoryFormData(Resource):
             "data": {
                 "countries": country_schema.dump(countries),
                 "backgrounds": background_schema.dump(backgrounds),
-                "allergies": allergy_type_schema.dump(allergies),
                 "vaccines": vaccine_type_schema.dump(vaccines),
                 "medicines": medicine_type_schema.dump(medicines),
             }

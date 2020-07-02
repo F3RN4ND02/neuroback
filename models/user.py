@@ -17,7 +17,6 @@ class UserModel(TimeBasedModel):
     college_number = Column("numero_colegio", String(40))
     doctor_number = Column("numero_medico", String(40))
     gender = Column("sexo", Enum('m', 'f', 'o'), nullable=False)
-    birth_date = Column("fecha_nacimiento", Date)
     img_url = Column(String(200))
     active = Column("activo", Boolean, server_default='False')
 
@@ -34,8 +33,6 @@ class UserModel(TimeBasedModel):
         self.doctor_number = doctor_number
         self.img_url = img_url
         self.gender = gender
-        self.birth_date = birth_date
-        self.work_city = work_city
         self.active = True
 
     def deactivate(self) -> None:
