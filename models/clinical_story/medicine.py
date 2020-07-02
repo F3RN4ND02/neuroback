@@ -10,3 +10,9 @@ class MedicineModel(BaseModel):
     medicine_type_id = Column("medicamentos_id", Integer, ForeignKey(MedicineTypeModel.id))
     clinical_story_id = Column("historias_clinicas_id", Integer, ForeignKey('historias_clinicas.id'))
     background = Column("antecedente", Boolean)
+
+    @classmethod
+    def get_list(cls, query_params=None) -> "ExamTypeModel":
+        query = cls.query
+
+        return query.all()

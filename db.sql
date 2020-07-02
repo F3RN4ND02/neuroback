@@ -414,11 +414,11 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mydb`.`medicamentos` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`medicamentos` (
-  `id` INT NOT NULL,
-  `nombre` VARCHAR(100) NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(600) NOT NULL,
   `principio_activo` VARCHAR(100) NOT NULL,
   `laboratorio` VARCHAR(100) NULL,
-  `medicamentoscol` VARCHAR(45) NULL,
+  `presentacion` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -552,6 +552,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Noticias` (
   `resumen` VARCHAR(500) NOT NULL,
   `enlace` VARCHAR(200) NOT NULL,
   `img_url` VARCHAR(100) NULL,
+  `creado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 

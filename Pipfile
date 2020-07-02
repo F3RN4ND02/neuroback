@@ -16,6 +16,8 @@ marshmallow-sqlalchemy = "*"
 flask-cors = "*"
 pymysql = "*"
 request = "*"
+pandas = "*"
+xlrd = "*"
 
 [requires]
 python_version = "3.6"
