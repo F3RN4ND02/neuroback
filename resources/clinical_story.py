@@ -109,10 +109,14 @@ class ClinicalStory(Resource):
         pacient = PacientModel.find_by_id(clinical_story["pacient_id"])
         pacient = pacient_schema.dump(pacient)
 
+        metadata = MetadataModel.find_by_story_id(clinical_story["id"])
+        metadata = metadata_schema_list.dump(metadata)
+
         clinical_story["medicines"] = medicines
         clinical_story["symptoms"] = symptoms
         clinical_story["exams"] = exams
         clinical_story["pacient"] = pacient
+        clinical_story["metadata"] = metadata
 
         return { "success": True, "data": clinical_story }, 200
 
