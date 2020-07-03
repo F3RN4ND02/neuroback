@@ -40,7 +40,7 @@ class Direction(Resource):
 
         municipality = MunicipalityModel.find_by_id(direction["municipality_id"])
         municipality = municipality_schema.dump(municipality)
-        print(municipality)
+        
         state = StateModel.find_by_id(municipality["state_id"])
         state = state_schema.dump(state)
 

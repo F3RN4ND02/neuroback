@@ -26,6 +26,18 @@ from schemas.pacient.vaccine import VaccineSchema
 from models.clinical_story.clinical_story import ClinicalStoryModel
 from schemas.clinical_story.clinical_story import ClinicalStorySchema
 
+from models.direction.direction import DirectionModel
+from schemas.direction.direction import DirectionSchema
+
+from models.direction.direction import MunicipalityModel
+from schemas.direction.municipality import MunicipalitySchema
+
+from models.direction.direction import StateModel
+from schemas.direction.state import StateSchema
+
+from models.direction.direction import CountryModel
+from schemas.direction.country import CountrySchema
+
 from utils.custom_errors import ResourceAlreadyExists, NotAuthorized, ResourceNotFound
 
 pacient_schema = PacientSchema()
@@ -38,6 +50,11 @@ family_background_schema = FamilyBackgroundSchema()
 profession_schema = ProfessionHistorySchema()
 allergy_schema = AllergySchema()
 vaccine_schema = VaccineSchema()
+direction_schema = DirectionSchema()
+municipality_schema = MunicipalitySchema()
+state_schema = StateSchema()
+country_schema = CountrySchema()
+
 
 personal_background_schema_list = PersonalBackgroundSchema(many=True)
 family_background_schema_list = FamilyBackgroundSchema(many=True)
@@ -96,6 +113,24 @@ class Pacient(Resource):
         professions = ProfessionHistoryModel.find_by_pacient_id(pacient_id)
         pacient["professions"] = profession_schema_list.dump(professions)
 
+        direction = DirectionModel.find_by_id(pacient["current_direction"])
+        direction = direction_schema.dump(direction)
+
+        municipality = MunicipalityModel.find_by_id(direction["municipality_id"])
+        municipality = municipality_schema.dump(municipality)
+        
+        state = StateModel.find_by_id(municipality["state_id"])
+        state = state_schema.dump(state)
+
+        country = CountryModel.find_by_id(state["country_id"])
+        country = country_schema.dump(country)
+
+        direction["municipality"] = municipality
+        direction["state"] = state
+        direction["country"] = country
+
+        pacient["direction"] = direction
+
         return { "success": True, "data": pacient }, 200
 
     @classmethod
@@ -117,41 +152,49 @@ class PacientRelatedData(Resource):
     def post(cls):
         all_json = request.get_json()
 
+        pacient_id = all_json["pacient_id"]
+        
         if all_json["personal_background"]:
-            personal_background_dict = {
-                "personal_background_type_id": all_json["personal_background"],
-                "pacient_id": all_json["pacient_id"]
-            }
-            personal_background = personal_background_schema.load(personal_background_dict)
-            print(personal_background)
-            personal_background.save_to_db()
+            for i, pb_id in enumerate(all_json["personal_background"]):
+                personal_background_dict = {
+                    "personal_background_type_id": pb_id,
+                    "pacient_id": pacient_id
+                }
+                personal_background = personal_background_schema.load(personal_background_dict)
+                personal_background.save_to_db()
 
         if all_json["family_background"]:
-            family_background_dict = {
-                "family_background_type_id": all_json["family_background"],
-                "pacient_id": all_json["pacient_id"],
-                "family_member": all_json.get("family_member")
-            }
-            family_background = family_background_schema.load(family_background_dict)
-            family_background.save_to_db()
+            fm_list = all_json.get("family_member")
+            for i, fb_id in enumerate(all_json["family_background"]):
+                family_background_dict = {
+                    "family_background_type_id": fb_id,
+                    "pacient_id": pacient_id,
+                    "family_member": fm_list[i]
+                }
+                family_background = family_background_schema.load(family_background_dict)
+                family_background.save_to_db()
 
         if all_json["profession"]:
-            profession_dict = {
-                "profession_type_id": all_json["profession"],
-                "pacient_id": all_json["pacient_id"],
-                "start": all_json.get("start"),
-                "end": all_json.get("end")
-            }
-            profession = profession_schema.load(profession_dict)
-            profession.save_to_db()
+            start_list = all_json.get("start")
+            end_list = all_json.get("end")
+            for i, p_id in enumerate(all_json["profession"]):
+                profession_dict = {
+                    "profession_type_id": p_id,
+                    "pacient_id": pacient_id,
+                    "start": start_list[i],
+                    "end": end_list[i]
+                }
+                profession = profession_schema.load(profession_dict)
+                profession.save_to_db()
 
         if all_json["vaccine"]:
-            vaccine_dict = {
-                "vaccine_type_id": all_json["vaccine"],
-                "pacient_id": all_json["pacient_id"]
-            }
-            vaccine = vaccine_schema.load(vaccine_dict)
-            vaccine.save_to_db()
+            for i, v_id in enumerate(all_json["vaccine"]):
+                vaccine_dict = {
+                    "vaccine_type_id": v_id,
+                    "pacient_id": pacient_id
+                }
+                vaccine = vaccine_schema.load(vaccine_dict)
+                vaccine.save_to_db()
 
         return {"success": True, "data": { "pacient_id": all_json["pacient_id"]}}
 

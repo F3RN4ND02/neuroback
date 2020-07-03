@@ -16,3 +16,7 @@ class MedicineModel(BaseModel):
         query = cls.query
 
         return query.all()
+
+    @classmethod
+    def find_by_story_id(cls, story_id: str) -> "ExamResultModel":
+        return cls.query.filter_by(clinical_story_id=story_id).all()

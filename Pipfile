@@ -18,6 +18,8 @@ pymysql = "*"
 request = "*"
 pandas = "*"
 xlrd = "*"
+tensorflow = "*"
+numpy = "*"
 
 [requires]
 python_version = "3.6"

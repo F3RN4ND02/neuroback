@@ -6,4 +6,5 @@ class ExamResultSchema(ma.ModelSchema):
     class Meta:
         model = ExamResultModel
         dump_only = ("id",)
+        load_only = ("date",)
         include_fk = True

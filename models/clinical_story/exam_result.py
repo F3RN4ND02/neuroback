@@ -21,3 +21,7 @@ class ExamResultModel(BaseModel):
     @classmethod
     def find_by_exam_type_id(cls, exam_type_id: str) -> "ExamResultModel":
         return cls.query.filter_by(exam_type_id=exam_type_id).all()
+
+    @classmethod
+    def find_by_story_id(cls, story_id: str) -> "ExamResultModel":
+        return cls.query.filter_by(clinical_story_id=story_id).all()

@@ -12,6 +12,7 @@ class DirectionModel(BaseModel):
         self.municipality_id = municipality_id
         self.description = description
 
+
 class MunicipalityModel(BaseModel):
     __tablename__ = "municipios"
 
