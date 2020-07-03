@@ -4,6 +4,9 @@ from flask import request
 from models.news import NewsModel
 from schemas.news import NewsSchema
 
+from datetime import datetime 
+from werkzeug.utils import secure_filename
+
 news_schema_list = NewsSchema(many=True)
 news_schema = NewsSchema()
 
@@ -23,3 +26,20 @@ class News(Resource):
         news = NewsModel.get_list()
 
         return { "success": True, "data": news_schema_list.dump(news) }, 200
+
+class NewsImageUpload(Resource):
+    @classmethod
+    def post(cls, news_id):
+        str_time = datetime.utcnow().strftime('%Y%m%d%H%M%S%f')[:-3]
+        f = request.files['image']
+        file_name = str_time + secure_filename(f.filename)
+        f.save(file_name)
+
+
+        news = NewsModel.find_by_id(news_id)
+
+        news.img_url = file_name
+
+        news.save_to_db()
+        
+        return { "success": True, "data": file_name }, 200 

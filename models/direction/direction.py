@@ -5,21 +5,17 @@ from models.abstract_models import BaseModel
 class DirectionModel(BaseModel):
     __tablename__ = "direcciones"
 
-    country_id = Column("pais_id", Integer, ForeignKey('countries.id'))
-    state_id = Column("estado_id", Integer, ForeignKey('states.id'))
-    municipality_id = Column("municipios_id", Integer, ForeignKey('municipalities.id'))
+    municipality_id = Column("municipios_id", Integer, ForeignKey('municipios.id'))
     description = Column("detalle", String(100))
 
-    def __init__(self, country_id, state_id, municipality_id, description):
-        self.country_id = country_id
-        self.state_id = state_id
+    def __init__(self, municipality_id, description):
         self.municipality_id = municipality_id
         self.description = description
 
 class MunicipalityModel(BaseModel):
     __tablename__ = "municipios"
 
-    state_id = Column("estado_id", Integer, ForeignKey('states.id'))
+    state_id = Column("estado_id", Integer, ForeignKey('estados.id'))
     name = Column("nombre", String(100), nullable=False)
 
 
@@ -30,7 +26,7 @@ class MunicipalityModel(BaseModel):
 class StateModel(BaseModel):
     __tablename__ = "estado"
 
-    country_id = Column("pais_id", Integer, ForeignKey('countries.id'))
+    country_id = Column("pais_id", Integer, ForeignKey('paises.id'))
     name = Column("nombre", String(100), nullable=False)
 
 

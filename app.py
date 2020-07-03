@@ -9,12 +9,12 @@ from blacklist import BLACKLIST
 from routes.all import init_all_routes
 from utils.custom_errors import *
 from utils.error_handlers import *
-import seeder 
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:@127.0.0.1:3306/mydb"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["PROPAGATE_EXCEPTIONS"] = True
+app.config["UPLOAD_FOLDER"] = "public"
 app.config["JWT_BLACKLIST_ENABLED"] = True  # enable blacklist feature
 app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = [
     "access",
@@ -23,29 +23,6 @@ app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = [
 app.secret_key = "jose"  # could do app.config['JWT_SECRET_KEY'] if we prefer
 CORS(app)
 api = Api(app)
-
-@app.before_first_request
-def create_tables():
-    if not db.engine.dialect.has_table(db.engine, 'usuarios'):
-        db.create_all()
-        insert_countries = db.text(seeder.country_seeder)
-        insert_states = db.text(seeder.state_seeder)
-        insert_municipalities = db.text(seeder.municipality_seeder)
-        insert_family_backgrounds = db.text(seeder.family_background_seeder)
-        insert_personal_backgrounds = db.text(seeder.personal_background_seeder)
-        insert_vaccines = db.text(seeder.vaccine_seeder)
-        insert_allergies = db.text(seeder.allergy_seeder)
-        insert_medicines = db.text(seeder.medicine_seeder)
-        db.session.execute(insert_countries)
-        db.session.execute(insert_states)
-        db.session.execute(insert_municipalities)
-        db.session.execute(insert_family_backgrounds)
-        db.session.execute(insert_personal_backgrounds)
-        db.session.execute(insert_vaccines)
-        db.session.execute(insert_allergies)
-        db.session.execute(insert_medicines)
-        db.session.commit()
-
 
 jwt = JWTManager(app)
 

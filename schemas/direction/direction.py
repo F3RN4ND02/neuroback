@@ -2,7 +2,7 @@ from ma import ma
 from models.direction.direction import DirectionModel
 
 
-class DirectionSchema(ma.SQLAlchemyAutoSchema):
+class DirectionSchema(ma.ModelSchema):
     class Meta:
         model = DirectionModel
         dump_only = ("id",)

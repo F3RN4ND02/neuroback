@@ -1,5 +1,6 @@
 from flask_restful import Resource, request
 from flask import request
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
     create_access_token,
@@ -15,6 +16,8 @@ from models.clinical_story.clinical_story import ClinicalStoryModel
 from schemas.clinical_story.clinical_story import ClinicalStorySchema
 from blacklist import BLACKLIST
 from utils.custom_errors import ResourceAlreadyExists, ResourceNotFound, InvalidCredentials, NotAuthorized
+from datetime import datetime
+import os
 
 user_schema = UserSchema()
 user_schema_list = UserSchema(many=True)
@@ -119,3 +122,22 @@ class Users(Resource):
         users = UserModel.get_list(query_params)
     
         return { "success": True, "data": user_schema_list.dump(users) }, 200
+
+class UserImageUpload(Resource):
+    @classmethod
+    @jwt_required
+    def post(cls):
+        str_time = datetime.utcnow().strftime('%Y%m%d%H%M%S%f')[:-3]
+        f = request.files['image']
+        file_name = str_time + secure_filename(f.filename)
+        f.save(file_name)
+
+
+        user_id = get_jwt_identity()
+        user = UserModel.find_by_id(user_id)
+
+        user.img_url = file_name
+
+        user.save_to_db()
+        
+        return { "success": True, "data": file_name }, 200 

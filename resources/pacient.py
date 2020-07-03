@@ -1,6 +1,8 @@
 from flask_restful import Resource, request
 from flask import request
 from werkzeug.security import safe_str_cmp
+from werkzeug.utils import secure_filename
+from datetime import datetime
 from flask_jwt_extended import jwt_required, fresh_jwt_required, get_jwt_identity
    
 from models.pacient.pacient import PacientModel
@@ -143,14 +145,6 @@ class PacientRelatedData(Resource):
             profession = profession_schema.load(profession_dict)
             profession.save_to_db()
 
-        # if all_json["allergy"]:
-        #     allergy_dict = {
-        #         "allergy_type_id": all_json["allergy"],
-        #         "pacient_id": all_json["pacient_id"]
-        #     }
-        #     allergy = allergy_schema.load(allergy_dict)
-        #     allergy.save_to_db()
-
         if all_json["vaccine"]:
             vaccine_dict = {
                 "vaccine_type_id": all_json["vaccine"],
@@ -160,3 +154,20 @@ class PacientRelatedData(Resource):
             vaccine.save_to_db()
 
         return {"success": True, "data": { "pacient_id": all_json["pacient_id"]}}
+
+class PacientImageUpload(Resource):
+    @classmethod
+    def post(cls, pacient_id):
+        str_time = datetime.utcnow().strftime('%Y%m%d%H%M%S%f')[:-3]
+        f = request.files['image']
+        file_name = str_time + secure_filename(f.filename)
+        f.save(file_name)
+
+
+        pacient = PacientModel.find_by_id(pacient_id)
+
+        pacient.img_url = file_name
+
+        pacient.save_to_db()
+        
+        return { "success": True, "data": file_name }, 200
