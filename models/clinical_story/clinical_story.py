@@ -10,25 +10,30 @@ from models.abstract_models import TimeBasedModel
 class ClinicalStoryModel(TimeBasedModel):
     __tablename__ = "historias_clinicas"
 
-    user_id = Column("usuarios_id", Integer, ForeignKey('users.id'))
-    pacient_id = Column("pacientes_id", Integer, ForeignKey('pacients.id'))
+    user_id = Column("usuarios_id", Integer, ForeignKey('usuarios.id'))
+    pacient_id = Column("pacientes_id", Integer, ForeignKey('pacientes.id'))
     edad_paciente = Column(Integer, nullable=False)
     description = Column("motivo_consulta", String(225), nullable=False)
-    cognitions = Column("rasgos_cognitivos", String(2000), nullable=False)
     sistolic = Column("sistolica", Integer)
     diastolic = Column("diastolica", Integer)
     pulse = Column("pulso", Integer)
-    resp_freq = Column("freq_respiratoria", Integer)
+    frec_resp = Column("freq_respiratoria", Integer)
     temp = Column("temp", Integer)
-    diagnosis = Column("diagnostico", String(4))
-    ord_exam =  Column("ord_exam", String(100))
-    exam_result = Column("exam_result", String(100))
+    height = Column("estatura", Integer)
+    weight = Column("peso", Integer)
+    diagnosis = Column("diagnostico", String(400))
+    fisical_exam = Column("examen_fisico", String(4000))
+    observations = Column("observaciones", String(400))
+    disponible = Column(Boolean)
 
 
     def update(self, new_values) -> None:
         for key, value in new_values.items():
             setattr(self, key, value)
         session.commit()
+
+    def delete_from_db(self):
+        setattr(self, activo, False)
 
     @classmethod
     def find_by_user_id(cls, user_id: str) -> "ClinicalStoryModel":

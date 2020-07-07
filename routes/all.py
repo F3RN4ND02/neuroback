@@ -12,6 +12,8 @@ from .backgrounds import init_backgrounds_routes
 from .medicine_type import init_medicines_routes
 from .news import init_news_routes
 from .allergy_type import init_allergies_routes
+from .symptom_type import init_symptoms_routes
+from .admin import init_admin_routes
 
 
 def init_all_routes(api):
@@ -29,3 +31,5 @@ def init_all_routes(api):
     init_medicines_routes(api)
     init_news_routes(api)
     init_allergies_routes(api)
+    init_symptoms_routes(api)
+    init_admin_routes(api)

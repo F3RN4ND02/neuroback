@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `mydb`.`paises` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`paises` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `codigo` VARCHAR(2) NULL,
+  `codigo` VARCHAR(20) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) )
 ENGINE = InnoDB;
@@ -75,8 +75,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mydb`.`direcciones` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`direcciones` (
-  `id` INT(40) NOT NULL AUTO_INCREMENT,
-  `detalle` VARCHAR(45) NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `detalle` VARCHAR(100) NULL,
   `municipios_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_direcciones_municipios1_idx` (`municipios_id` ASC) ,
@@ -134,19 +134,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`usuarios` (
   `email` VARCHAR(45) NOT NULL,
   `contrasena` VARCHAR(200) NOT NULL,
   `rol` VARCHAR(45) NOT NULL,
-  `titulo` VARCHAR(45) NULL,
-  `documento` VARCHAR(45) NULL,
-  `telefono` VARCHAR(45) NULL,
-  `numero_colegio` VARCHAR(45) NULL,
-  `numero_medico` VARCHAR(45) NULL,
+  `documento` VARCHAR(45) NOT NULL,
   `sexo` ENUM('m', 'f', 'o') NULL,
-  `activo` TINYINT NULL,
+  `activo` TINYINT NULL DEFAULT 1,
   `creado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `actualizado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `img_url` VARCHAR(200) NULL DEFAULT 'N/A',
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) ,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `documento_UNIQUE` (`documento` ASC) )
 ENGINE = InnoDB;
 
 
@@ -162,16 +159,19 @@ CREATE TABLE IF NOT EXISTS `mydb`.`historias_clinicas` (
   `edad_paciente` INT NOT NULL,
   `motivo_consulta` VARCHAR(225) NOT NULL,
   `rasgos_cognitivos` VARCHAR(2000) NOT NULL,
-  `sistolica` INT(3) NULL,
-  `diastolica` INT(3) NULL,
+  `sistolica` INT NULL,
+  `diastolica` INT NULL,
   `pulso` INT(3) NULL,
   `freq_respiratoria` INT(3) NULL,
   `temp` INT(3) NULL,
   `diagnostico` VARCHAR(255) NULL,
-  `ord_exam` VARCHAR(255) NULL,
-  `exam_result` VARCHAR(45) NULL,
   `creado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `actualizado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `estatura` INT NULL,
+  `peso` INT NULL,
+  `observaciones` VARCHAR(400) NULL,
+  `examen_fisico` VARCHAR(2000) NULL,
+  `disponible` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `fk_historias_clinicas_usuarios1_idx` (`usuarios_id` ASC) ,
   INDEX `fk_historias_clinicas_pacientes1_idx` (`pacientes_id` ASC) ,
@@ -415,7 +415,7 @@ DROP TABLE IF EXISTS `mydb`.`medicamentos` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`medicamentos` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(600) NOT NULL,
+  `nombre` VARCHAR(200) NOT NULL,
   `principio_activo` VARCHAR(100) NOT NULL,
   `laboratorio` VARCHAR(100) NULL,
   `presentacion` VARCHAR(45) NULL,
@@ -456,8 +456,8 @@ DROP TABLE IF EXISTS `mydb`.`tipo_metadatos` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`tipo_metadatos` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL,
-  `descripcion` VARCHAR(200) NOT NULL,
+  `nombre` VARCHAR(100) NOT NULL,
+  `descripcion` VARCHAR(2000) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -489,59 +489,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`conversaciones`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`conversaciones` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`conversaciones` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `usuarios_id` INT NOT NULL,
-  `usuarios2_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_conversaciones_usuarios1_idx` (`usuarios_id` ASC) ,
-  INDEX `fk_conversaciones_usuarios2_idx` (`usuarios2_id` ASC) ,
-  CONSTRAINT `fk_conversaciones_usuarios1`
-    FOREIGN KEY (`usuarios_id`)
-    REFERENCES `mydb`.`usuarios` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_conversaciones_usuarios2`
-    FOREIGN KEY (`usuarios2_id`)
-    REFERENCES `mydb`.`usuarios` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`mensajes`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`mensajes` ;
-
-CREATE TABLE IF NOT EXISTS `mydb`.`mensajes` (
-  `id` INT NOT NULL,
-  `conversaciones_id` INT NOT NULL,
-  `usuarios_id` INT NOT NULL,
-  `contenido` VARCHAR(500) NOT NULL,
-  `leido` TINYINT NOT NULL DEFAULT 0,
-  `fecha` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  INDEX `fk_mensajes_conversaciones1_idx` (`conversaciones_id` ASC) ,
-  INDEX `fk_mensajes_usuarios1_idx` (`usuarios_id` ASC) ,
-  CONSTRAINT `fk_mensajes_conversaciones1`
-    FOREIGN KEY (`conversaciones_id`)
-    REFERENCES `mydb`.`conversaciones` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_mensajes_usuarios1`
-    FOREIGN KEY (`usuarios_id`)
-    REFERENCES `mydb`.`usuarios` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `mydb`.`Noticias`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`Noticias` ;
@@ -561,3 +508,4 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

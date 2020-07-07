@@ -12,6 +12,14 @@ class DirectionModel(BaseModel):
         self.municipality_id = municipality_id
         self.description = description
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.first()
+
 
 class MunicipalityModel(BaseModel):
     __tablename__ = "municipios"
@@ -24,10 +32,18 @@ class MunicipalityModel(BaseModel):
         self.name = name
         self.state_id = state_id
 
-class StateModel(BaseModel):
-    __tablename__ = "estado"
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
-    country_id = Column("pais_id", Integer, ForeignKey('paises.id'))
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.first()
+
+class StateModel(BaseModel):
+    __tablename__ = "estados"
+
+    country_id = Column("paises_id", Integer, ForeignKey('paises.id'))
     name = Column("nombre", String(100), nullable=False)
 
 
@@ -35,8 +51,16 @@ class StateModel(BaseModel):
         self.name = name
         self.country_id = country_id
 
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.first()
+
 class CountryModel(BaseModel):
-    __tablename__ = "pais"
+    __tablename__ = "paises"
 
     country_name = Column("nombre", String(50), unique=True, nullable=False)
 
@@ -46,5 +70,13 @@ class CountryModel(BaseModel):
         self.country_name = country_name
 
     @classmethod
+    def get_all(cls):
+        return cls.query.all()
+
+    @classmethod
     def find_by_code(cls, code: str) -> "CountryModel":
         return cls.query.filter_by(country_code=code).first()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.first()

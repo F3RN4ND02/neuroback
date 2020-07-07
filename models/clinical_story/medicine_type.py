@@ -10,8 +10,7 @@ class MedicineTypeModel(BaseModel):
     laboratorio = Column(String(40), nullable=False)
     presentacion = Column(String(40))
     
-    @classmethod
-    def get_list(cls, query_params=None) -> "ExamTypeModel":
-        query = cls.query
 
-        return query.all()
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()

@@ -15,3 +15,8 @@ class NewsModel(TimeBasedModel):
         query = cls.query
 
         return query.all()
+
+    def update(self, new_values) -> None:
+        for key, value in new_values.items():
+            setattr(self, key, value)
+        session.commit()

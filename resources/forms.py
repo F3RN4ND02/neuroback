@@ -16,11 +16,18 @@ from schemas.pacient.vaccine_type import VaccineTypeSchema
 from models.clinical_story.medicine_type import MedicineTypeModel
 from schemas.clinical_story.medicine_type import MedicineTypeSchema
 
+from models.clinical_story.symptom_type import SymptomTypeModel
+from schemas.clinical_story.symptom_type import SymptomTypeSchema
+
+from models.clinical_story.metadata_type import MetadataTypeModel
+from schemas.clinical_story.metadata_type import MetadataTypeSchema
+
 country_schema = CountrySchema(many=True)
 background_schema = BackgroundSchema(many=True)
-allergy_type_schema = AllergyTypeSchema(many=True)
 vaccine_type_schema = VaccineTypeSchema(many=True)
-medicine_type_schema = MedicineTypeSchema(many=True) 
+medicine_type_schema = MedicineTypeSchema(many=True)
+symptom_type_schema = SymptomTypeSchema(many=True) 
+metadata_type_schema = MetadataTypeSchema(many=True) 
 
 class ClinicalStoryFormData(Resource):
     @classmethod
@@ -29,6 +36,8 @@ class ClinicalStoryFormData(Resource):
         backgrounds = BackgroundModel.query.all()
         vaccines = VaccineTypeModel.query.all()
         medicines = MedicineTypeModel.query.all()
+        symptoms = SymptomTypeModel.query.all()
+        metadata = MetadataTypeModel.query.all()
         return {
             "success": True,
             "data": {
@@ -36,5 +45,7 @@ class ClinicalStoryFormData(Resource):
                 "backgrounds": background_schema.dump(backgrounds),
                 "vaccines": vaccine_type_schema.dump(vaccines),
                 "medicines": medicine_type_schema.dump(medicines),
+                "symptoms": symptom_type_schema.dump(symptoms),
+                "metadata": metadata_type_schema.dump(metadata)
             }
             }, 200

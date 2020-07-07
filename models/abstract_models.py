@@ -13,9 +13,6 @@ class BaseModel(Model):
         session.add(self)
         session.commit()
 
-    def delete_from_db(self) -> None:
-        session.delete(self)
-        session.commit()
 
 class TimeBasedModel(BaseModel):
     __abstract__ = True
@@ -24,5 +21,9 @@ class TimeBasedModel(BaseModel):
 
 class DescriptionBasedModel(BaseModel):
     __abstract__ = True
-    name = Column("nombre", String(40), nullable=False)
-    description = Column("descripcion", String(100), nullable=False)
+    name = Column("nombre", String(200), nullable=False)
+    description = Column("descripcion", String(600), nullable=False)
+
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()

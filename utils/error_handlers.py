@@ -5,7 +5,7 @@ def handle_resource_exists_error(err):
     return { "success": False, "errors": err.field}, 400
 
 def handle_invalid_cred_error(err):
-    return { "success": False, "errors": "Credenciales invalidas"}, 401
+    return { "success": False, "errors": "Contraseña invalida"}, 401
 
 def handle_resource_not_found_error(err):
     return { "success": False, "errors": "Recurso no encontrado"}, 404

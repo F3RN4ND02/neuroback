@@ -11,26 +11,20 @@ class UserModel(TimeBasedModel):
     username = Column(String(20), unique=True)
     first_name = Column("nombre", String(20), nullable=False)
     last_name = Column("apellido", String(20), nullable=False)
-    role = Column("rol", Enum('doctor', 'researcher'), nullable=False)
-    title = Column("titulo",String(20), nullable=False)
+    role = Column("rol", Enum('Estudiante', 'Medico', 'Medico Especialista', 'Doctor', 'Investigador'), nullable=False)
     document = Column("documento", String(16), nullable=False, unique=True)
-    college_number = Column("numero_colegio", String(40))
-    doctor_number = Column("numero_medico", String(40))
     gender = Column("sexo", Enum('m', 'f', 'o'), nullable=False)
     img_url = Column(String(200))
     active = Column("activo", Boolean, server_default='False')
 
-    def __init__(self, email, password, username, first_name, last_name, role, title, document, gender, college_number="N/A", doctor_number="N/A", img_url="N/A", birth_date=None, work_city=None):
+    def __init__(self, email, password, username, first_name, last_name, role, document, gender, img_url="N/A"):
         self.email = email
         self.password = password
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
         self.role = role
-        self.title = title
         self.document = document
-        self.college_number = college_number
-        self.doctor_number = doctor_number
         self.img_url = img_url
         self.gender = gender
         self.active = True
@@ -83,3 +77,7 @@ class UserModel(TimeBasedModel):
         for key, value in new_values.items():
             setattr(self, key, value)
         session.commit()
+
+    
+
+        
