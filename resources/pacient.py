@@ -68,15 +68,71 @@ class Pacients(Resource):
     @jwt_required
     def post(cls):
         pacient_json = request.get_json()
-        pacient = pacient_schema.load(pacient_json)
 
-        if PacientModel.find_by_document(pacient.document):
+        if PacientModel.find_by_document(pacient_json["document"]):
             raise ResourceAlreadyExists("error", { "document": ["Ya existe un recurso con este campo"]})
+
+        related_data = None
+        if "related_data" in pacient_json: 
+            related_data = pacient_json.pop("related_data") 
+        
+        pacient = pacient_schema.load(pacient_json)
 
         pacient.save_to_db()
 
+        personal_backgrounds = list()
+        family_backgrounds = list()
+        vaccines = list()
+
+        if related_data:
+            all_json = related_data
+            print(all_json)
+            if "personal_background" in all_json:
+                for i, pb_id in enumerate(all_json["personal_background"]):
+                    pb_dict = {
+                        "personal_background_type_id": pb_id,
+                        "pacient_id": pacient.id,
+                    }
+                    personal_backgrounds.append(personal_background_schema.load(pb_dict))
+                    print(personal_backgrounds)
+            if "family_backgrounds" in all_json:
+                f_member = all_json.get("family_member")
+                for i, fb_id in enumerate(all_json.get("family_backgrounds")):
+                    fb_dict = {
+                        "family_background_type_id": fb_id,
+                        "pacient_id": pacient_id,
+                        "family_member": f_member[i]
+                    }
+                    family_backgrounds.append(family_background_schema.load(fb_dict))
+                    print(family_backgrounds)
+
+            if "vaccine" in all_json:
+                for i, vaccine_id in enumerate(all_json.get("vaccine")):
+                    vaccine_dict = {
+                        "vaccine_type_id": vaccine_id,
+                        "pacient_id": pacient.id,
+                    }
+                    vaccines.append(vaccine_schema.load(vaccine_dict))
+                    print(vaccines)
+            
+                    
+            if "personal_background" in all_json: 
+                for pb in personal_backgrounds:
+                    print(pb)
+                    pb.save_to_db()
+            if "family_background" in all_json: 
+                for fb in family_backgrounds:   
+                    fb.save_to_db()
+            if "vaccine" in all_json:
+                for vaccine in vaccines:
+                    vaccine.save_to_db()
+            
+
+
+
         return {"success": True, "data": pacient_schema.dump(pacient)}, 201
 
+    
     @classmethod
     @jwt_required
     def get(cls):
@@ -185,9 +241,10 @@ class Pacient(Resource):
         pacient["family_backgrounds"] = pc_family_backgrounds
         pacient["vaccine_types"] = pc_vaccines
 
+        print(pacient["current_direction"])
         direction = DirectionModel.find_by_id(pacient["current_direction"])
         direction = direction_schema.dump(direction)
-
+        print(direction)
         municipality = MunicipalityModel.find_by_id(direction["municipality_id"])
         municipality = municipality_schema.dump(municipality)
         

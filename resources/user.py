@@ -77,7 +77,7 @@ class UserLogin(Resource):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(user.id)
             return {"success": True, "access_token": access_token, "refresh_token": refresh_token, "user": user_schema.dump(user)}, 200
-
+            
         raise InvalidCredentials
 
 class UserLogout(Resource):

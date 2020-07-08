@@ -82,6 +82,7 @@ class ClinicalStories(Resource):
         clinical_story_json = request.get_json()
         clinical_story_json['user_id'] = get_jwt_identity()
 
+        print(clinical_story_json)
         pacient = PacientModel.find_by_id(clinical_story_json['pacient_id'])
         if not pacient:
             raise ResourceNotFound
@@ -232,8 +233,10 @@ class ClinicalStories(Resource):
 
             direction = DirectionModel.find_by_id(pacient["current_direction"])
             direction = direction_schema.dump(direction)
+            print(direction["municipality_id"])
             municipality = MunicipalityModel.find_by_id(direction["municipality_id"])
             municipality = municipality_schema.dump(municipality)
+            print(municipality)
             direction["municipality"] = municipality
 
             pacient["personal_backgrounds"] = p_personal_backgrounds

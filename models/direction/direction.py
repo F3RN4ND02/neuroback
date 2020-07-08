@@ -18,7 +18,7 @@ class DirectionModel(BaseModel):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.first()
+        return cls.query.filter_by(id=id).first()
 
 
 class MunicipalityModel(BaseModel):
@@ -38,7 +38,7 @@ class MunicipalityModel(BaseModel):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.first()
+        return cls.query.filter_by(id=id).first()
 
 class StateModel(BaseModel):
     __tablename__ = "estados"
@@ -57,7 +57,7 @@ class StateModel(BaseModel):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.first()
+        return cls.query.filter_by(id=id).first()
 
 class CountryModel(BaseModel):
     __tablename__ = "paises"
@@ -79,4 +79,4 @@ class CountryModel(BaseModel):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.first()
+        return cls.query.filter_by(id=id).first()

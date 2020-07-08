@@ -1,4 +1,4 @@
-INSERT INTO paises VALUES (1, 'VE', 'Venezuela');
+INSERT INTO paises VALUES (1, 'Venezuela','VE');
 
 INSERT INTO estados (id, nombre, paises_id) VALUES
 (1, 'Amazonas', 1),
