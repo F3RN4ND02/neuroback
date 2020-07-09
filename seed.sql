@@ -490,3 +490,10 @@ INSERT INTO `mydb`.`sintomas` (`historias_clinicas_id`, `tipo_sintomas_id`) VALU
 INSERT INTO `mydb`.`sintomas` (`historias_clinicas_id`, `tipo_sintomas_id`) VALUES ('2', '4');
 INSERT INTO `mydb`.`sintomas` (`historias_clinicas_id`, `tipo_sintomas_id`) VALUES ('2', '6');
 INSERT INTO `mydb`.`sintomas` (`historias_clinicas_id`, `tipo_sintomas_id`) VALUES ('2', '3');
+
+
+INSERT INTO `mydb`.`noticias` (`titulo`, `resumen`, `enlace`) VALUES ('Hallazgo cientifico en el lab...', 'Un nuevo hallazgo en el laboratorio LabEngine de la ciudad de Los Angeles', 'https://www.google.com');
+INSERT INTO `mydb`.`noticias` (`titulo`, `resumen`, `enlace`) VALUES ('Entregado los premios a los nuevos...', 'El pasado domingo se realizaron la 25ma entrega de los...', 'https://www.google.com');
+INSERT INTO `mydb`.`noticias` (`titulo`, `resumen`, `enlace`) VALUES ('Descubren nuevo...', 'Cientificos de la universidad de Kentucky...', 'https://www.google.com');
+INSERT INTO `mydb`.`noticias` (`titulo`, `resumen`, `enlace`) VALUES ('Aplazada la convencion de neurologia', 'Tristes noticias para los medicos de todo el mundo, el evento...', 'https://www.google.com');
+INSERT INTO `mydb`.`noticias` (`titulo`, `resumen`, `enlace`) VALUES ('Empresa desvela su nuevo producto..', 'Se trata de las nuevas herramientas para la neurologia..', 'https://www.google.com');

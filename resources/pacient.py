@@ -172,22 +172,22 @@ class Pacients(Resource):
                     pc_family_backgrounds.append({ "id": family_background["id"], "name": family_background["name"], "description": family_background["description"]})
             
             
-            direction = DirectionModel.find_by_id(pacient["current_direction"])
-            direction = direction_schema.dump(direction)
-            municipality = MunicipalityModel.find_by_id(direction["municipality_id"])
-            municipality = municipality_schema.dump(municipality)
-            state = StateModel.find_by_id(municipality["state_id"])
-            state = state_schema.dump(state)
-            country = CountryModel.find_by_id(state["country_id"])
-            country = country_schema.dump(country)
-            direction["municipality"] = municipality
-            direction["state"] = state
-            direction["country"] = country
+            # direction = DirectionModel.find_by_id(pacient["current_direction"])
+            # direction = direction_schema.dump(direction)
+            # municipality = MunicipalityModel.find_by_id(direction["municipality_id"])
+            # municipality = municipality_schema.dump(municipality)
+            # state = StateModel.find_by_id(municipality["state_id"])
+            # state = state_schema.dump(state)
+            # country = CountryModel.find_by_id(state["country_id"])
+            # country = country_schema.dump(country)
+            # direction["municipality"] = municipality
+            # direction["state"] = state
+            # direction["country"] = country
 
             pacient["personal_backgrounds"] = pc_personal_backgrounds
             pacient["family_backgrounds"] = pc_family_backgrounds
             pacient["vaccine_types"] = pc_vaccines
-            pacient["direction"] = direction
+            # pacient["direction"] = direction
 
         return { "success": True, "data": pacients }, 200
 

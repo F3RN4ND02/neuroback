@@ -147,7 +147,8 @@ class User(Resource):
 
         requester_id = get_jwt_identity()
 
-        if requester_id != 1 or user_id == 1:
+        print(requester_id != 1)
+        if requester_id != user_id and requester_id != 1:
             raise NotAuthorized
 
         user.deactivate()
@@ -162,7 +163,9 @@ class User(Resource):
 
         requester_id = get_jwt_identity()
 
-        if requester_id != 1 or user_id == 1:
+        print(user_id != 1)
+
+        if requester_id != user_id and requester_id != 1:
             raise NotAuthorized
 
         fields_json = request.get_json()

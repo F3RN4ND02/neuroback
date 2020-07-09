@@ -21,7 +21,7 @@ class MedicineType(Resource):
 
     @classmethod
     def get(cls):
-        exams = MedicineTypeModel.get_list()
+        exams = MedicineTypeModel.get_all()
 
         return { "success": True, "data": medicine_type_schema_list.dump(exams) }, 200
 

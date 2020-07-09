@@ -7,6 +7,8 @@ from schemas.news import NewsSchema
 from datetime import datetime 
 from werkzeug.utils import secure_filename
 
+import os
+
 news_schema_list = NewsSchema(many=True)
 news_schema = NewsSchema()
 

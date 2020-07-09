@@ -72,6 +72,14 @@ from models.direction.direction import MunicipalityModel
 from schemas.direction.municipality import MunicipalitySchema 
 municipality_schema = MunicipalitySchema()
 
+from models.direction.direction import StateModel
+from schemas.direction.state import StateSchema 
+state_schema = StateSchema()
+
+from models.direction.direction import CountryModel
+from schemas.direction.country import CountrySchema 
+country_schema = CountrySchema()
+
 from utils.custom_errors import NotAuthorized, ResourceNotFound
 from utils.table_joiners import get_types_data
 
@@ -293,6 +301,51 @@ class ClinicalStory(Resource):
             if metadata["id"] in metadata_ids:
                 clc_metadata.append({ "id": metadata["id"], "name": metadata["name"], "description": metadata["description"] })
 
+        p_id = pacient["id"]
+
+        personal_backgrounds = PersonalBackgroundModel.find_by_pacient_id(p_id)
+        personal_backgrounds = personal_background_schema_list.dump(personal_backgrounds)
+        personal_background_ids = [personal_background["personal_background_type_id"] for personal_background in personal_backgrounds]
+        p_personal_backgrounds = []
+        for personal_background in types["backgrounds"]:
+            if personal_background["id"] in personal_background_ids:
+                p_personal_backgrounds.append({ "id": personal_background["id"], "name": personal_background["name"], "description": personal_background["description"] })
+
+        family_backgrounds = FamilyBackgroundModel.find_by_pacient_id(p_id)
+        family_backgrounds = family_background_schema_list.dump(family_backgrounds)
+        family_background_ids = [family_background["family_background_type_id"] for family_background in family_backgrounds]
+        p_family_backgrounds = []
+        for family_background in types["backgrounds"]:
+            if family_background["id"] in family_background_ids:
+                p_family_backgrounds.append({ "id": family_background["id"], "name": family_background["name"], "description": family_background["description"] })
+
+        vaccines = VaccineModel.find_by_pacient_id(p_id)
+        vaccines = vaccine_schema_list.dump(vaccines)
+        vaccine_ids = [vaccine["vaccine_type_id"] for vaccine in vaccines]
+        p_vaccines = []
+        for vaccine in types["vaccine_types"]:
+            if vaccine["id"] in vaccine_ids:
+                p_vaccines.append({ "id": vaccine["id"], "name": vaccine["name"], "description": vaccine["description"] })
+
+        direction = DirectionModel.find_by_id(pacient["current_direction"])
+        direction = direction_schema.dump(direction)
+        print(direction["municipality_id"])
+        municipality = MunicipalityModel.find_by_id(direction["municipality_id"])
+        municipality = municipality_schema.dump(municipality)
+        state = StateModel.find_by_id(municipality["state_id"])
+        state = state_schema.dump(state)
+        country = CountryModel.find_by_id(state["country_id"])
+        country = country_schema.dump(country)
+        print(municipality)
+        direction["municipality"] = municipality
+        direction["state"] = state
+        direction["country"] = country
+
+        pacient["personal_backgrounds"] = p_personal_backgrounds
+        pacient["family_backgrounds"] = p_family_backgrounds
+        pacient["vaccines"] = p_vaccines
+        pacient["direction"] = direction
+    
         clinical_story["pacient"] = pacient
         clinical_story["medicines"] = clc_medicines
         clinical_story["symptoms"] = clc_symptoms

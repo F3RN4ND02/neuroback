@@ -75,8 +75,8 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mydb`.`direcciones` ;
 
 CREATE TABLE IF NOT EXISTS `mydb`.`direcciones` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `detalle` VARCHAR(100) NULL,
+  `id` INT(40) NOT NULL AUTO_INCREMENT,
+  `detalle` VARCHAR(45) NULL,
   `municipios_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_direcciones_municipios1_idx` (`municipios_id` ASC) ,
@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`pacientes` (
   `tipo_sangre` ENUM('A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-', 'DESCONOCIDO') NULL,
   `telefono` VARCHAR(20) NULL,
   `telefono2` VARCHAR(20) NULL,
+  `profesion` VARCHAR(200) NULL,
   `img_url` VARCHAR(100) NULL DEFAULT 'N/A',
   `creado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `actualizado_en` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -171,7 +172,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`historias_clinicas` (
   `peso` INT NULL,
   `observaciones` VARCHAR(400) NULL,
   `examen_fisico` VARCHAR(2000) NULL,
-  `disponible` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `fk_historias_clinicas_usuarios1_idx` (`usuarios_id` ASC) ,
   INDEX `fk_historias_clinicas_pacientes1_idx` (`pacientes_id` ASC) ,
@@ -508,4 +508,3 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-

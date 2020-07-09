@@ -17,6 +17,7 @@ class PacientModel(TimeBasedModel):
     blood_type = Column("tipo_sangre", Enum('A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-', 'DESCONOCIDO'), nullable=False)
     telephone_1 = Column("telefono", String(20))
     telephone_2 = Column("telefono2", String(20))
+    profession = Column("profesion", String(100))
     img_url = Column(String(200))
 
     @classmethod
