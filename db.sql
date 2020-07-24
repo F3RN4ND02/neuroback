@@ -172,6 +172,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`historias_clinicas` (
   `peso` INT NULL,
   `observaciones` VARCHAR(400) NULL,
   `examen_fisico` VARCHAR(2000) NULL,
+  `disponible` TINYINT NULL,
+
+
   PRIMARY KEY (`id`),
   INDEX `fk_historias_clinicas_usuarios1_idx` (`usuarios_id` ASC) ,
   INDEX `fk_historias_clinicas_pacientes1_idx` (`pacientes_id` ASC) ,

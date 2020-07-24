@@ -13,3 +13,7 @@ class MetadataModel(BaseModel):
     @classmethod
     def find_by_story_id(cls, story_id: str) -> "ExamResultModel":
         return cls.query.filter_by(clinical_story_id=story_id).all()
+
+    @classmethod
+    def find_by_metadata_id(cls, metadata_id: str) -> "ExamResultModel":
+        return cls.query.filter_by(metadata_type_id=metadata_id).all()

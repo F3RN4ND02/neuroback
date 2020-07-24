@@ -11,7 +11,7 @@ class UserModel(TimeBasedModel):
     username = Column(String(20), unique=True)
     first_name = Column("nombre", String(20), nullable=False)
     last_name = Column("apellido", String(20), nullable=False)
-    role = Column("rol", Enum('Estudiante', 'Medico', 'Medico Especialista', 'Doctor', 'Investigador'), nullable=False)
+    role = Column("rol", Enum('Estudiante', 'Medico', 'Medico Especialista', 'Doctor', 'Investigador', 'Administrador'), nullable=False)
     document = Column("documento", String(16), nullable=False, unique=True)
     gender = Column("sexo", Enum('m', 'f', 'o'), nullable=False)
     img_url = Column(String(200))

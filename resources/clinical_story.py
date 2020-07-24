@@ -405,32 +405,41 @@ class GetHelp(Resource):
         relevant = {k: v for k, v in sorted(relevant.items(), key=lambda item: item[1], reverse=True)}
         print(relevant)
 
-        clinical_stories = []
+        clinical_stories = {}
         for key in relevant:
-            metadata_results = MetadataModel.find_by_story_id(key + 1)
+            metadata_results = MetadataModel.find_by_metadata_id(key + 1)
             metadata_results = metadata_schema_list.dump(metadata_results)
 
             for result in metadata_results:
-                clinical_story = ClinicalStoryModel.find_by_id(result["clinical_story_id"])
-                clinical_story = clinical_story_schema.dump(clinical_story)
+                if result["clinical_story_id"] in clinical_stories:
+                    clinical_stories[result["clinical_story_id"]] = clinical_stories[result["clinical_story_id"]] + 1
+                else:
+                    clinical_stories[result["clinical_story_id"]] = 1
 
-                c_id = clinical_story["id"]
+            clinical_stories = {k: v for k, v in sorted(clinical_stories.items(), key=lambda item: item[1], reverse=True)}
+            # metadata_results = MetadataModel.find_by_story_id(key + 1)
+            # metadata_results = metadata_schema_list.dump(metadata_results)
 
-                medicines = MedicineModel.find_by_story_id(c_id)
-                medicines = medicine_schema_list.dump(medicines)
+            # for result in metadata_results:
+            #     clinical_story = ClinicalStoryModel.find_by_id(result["clinical_story_id"])
+            #     clinical_story = clinical_story_schema.dump(clinical_story)
 
-                symptoms = SymptomModel.find_by_story_id(c_id)
-                symptoms = symptom_schema_list.dump(symptoms)
+            #     c_id = clinical_story["id"]
 
-                exams = ExamResultModel.find_by_story_id(c_id)
-                exams = exam_schema_list.dump(exams)
+            #     medicines = MedicineModel.find_by_story_id(c_id)
+            #     medicines = medicine_schema_list.dump(medicines)
+
+            #     symptoms = SymptomModel.find_by_story_id(c_id)
+            #     symptoms = symptom_schema_list.dump(symptoms)
+
+            #     exams = ExamResultModel.find_by_story_id(c_id)
+            #     exams = exam_schema_list.dump(exams)
                 
 
-                clinical_story["medicines"] = medicines
-                clinical_story["symptoms"] = symptoms
-                clinical_story["exams"] = exams
+            #     clinical_story["medicines"] = medicines
+            #     clinical_story["symptoms"] = symptoms
+            #     clinical_story["exams"] = exams
 
-                clinical_stories.append(clinical_story)
+            #     clinical_stories.append(clinical_story)
 
         return {"success": True, "data": clinical_stories}, 200
-        
